@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"net/http"
+	"os"
 	"sort"
 	"time"
 )
@@ -125,6 +126,12 @@ func main() {
 	sleep := flag.Int("sleep", 500, "sleep in ms between requests")
 
 	flag.Parse()
+
+	if flag.NFlag() == 0 || *name == "" {
+		flag.Usage()
+		fmt.Println("You have to provide name with -name=\"examplename\"")
+		os.Exit(1)
+	}
 
 	powerset := generatePowerset(*name)
 	results := checkNames(powerset, *workers, *sleep)
