@@ -112,11 +112,11 @@ func displayResults(results chan Result, size int, verbose bool) {
 
 // Verbose print of a result
 func printResult(result Result) {
-	if result.Available {
-		fmt.Printf("[%s] %s is available\n", result.Worker, result.Name)
-	} else {
-		fmt.Printf("[%s] %s is unavailable\n", result.Worker, result.Name)
+	status := "available"
+	if !result.Available {
+		status = "unavailable"
 	}
+	fmt.Printf("[%d] %s is %s\n", result.Worker, result.Name, status)
 }
 
 func main() {
