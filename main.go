@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"net/http"
+	"sort"
 	"time"
 )
 
@@ -42,8 +43,17 @@ func checkNames(names []string, workers int, sleep int) chan Result {
 	return results
 }
 
+// Type for sorting string by length
+type ByLen []string
+
+func (a ByLen) Len() int           { return len(a) }
+func (a ByLen) Less(i, j int) bool { return len(a[i]) > len(a[j]) }
+func (a ByLen) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+
 // Goroutine responsible for checking slice of names
 func checkWorker(results chan Result, names []string, workerId int, sleep int) {
+	sort.Sort(ByLen(names))
+
 	for _, name := range names {
 		results <- Result{
 			Name:      name,
